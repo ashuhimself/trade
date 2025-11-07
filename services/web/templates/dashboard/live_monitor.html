@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-bold mb-8">Live Monitor</h2>
+
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h3 class="text-xl font-bold mb-4">Active Sessions</h3>
+        {% if live_runs %}
+        <table class="min-w-full">
+            <thead>
+                <tr class="border-b">
+                    <th class="text-left py-2">Strategy</th>
+                    <th class="text-left py-2">Type</th>
+                    <th class="text-left py-2">PnL</th>
+                    <th class="text-left py-2">Orders</th>
+                    <th class="text-left py-2">Positions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for run in live_runs %}
+                <tr class="border-b">
+                    <td class="py-2">{{ run.strategy.name }}</td>
+                    <td class="py-2">{{ run.run_type }}</td>
+                    <td class="py-2 text-green-600">+₹0.00</td>
+                    <td class="py-2">0</td>
+                    <td class="py-2">0</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-gray-500">No active sessions</p>
+        {% endif %}
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-bold mb-4">Order Blotter</h3>
+        <div id="order-blotter">
+            <p class="text-gray-500">No orders yet</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

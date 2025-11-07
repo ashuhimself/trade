@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Trading Platform{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Trading Platform</h1>
+            <div class="space-x-4">
+                <a href="{% url 'overview' %}" class="hover:underline">Overview</a>
+                <a href="{% url 'strategies_list' %}" class="hover:underline">Strategies</a>
+                <a href="{% url 'live_monitor' %}" class="hover:underline">Live</a>
+                <a href="{% url 'data_browser' %}" class="hover:underline">Data</a>
+                <a href="/api/" class="hover:underline">API</a>
+                <a href="/docs/" class="hover:underline">Docs</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto mt-8 px-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="mt-16 py-8 bg-gray-200 text-center text-gray-600">
+        <p>Trading Platform - Production Grade Algorithmic Trading</p>
+    </footer>
+</body>
+</html>

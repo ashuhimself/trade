@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'trading-platform'
+    environment: 'production'
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'django_web'
+    static_configs:
+      - targets: ['web:8000']
+    metrics_path: '/metrics'
+
+  - job_name: 'exec_gateway'
+    static_configs:
+      - targets: ['exec:8001']
+    metrics_path: '/metrics'

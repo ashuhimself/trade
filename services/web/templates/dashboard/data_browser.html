@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-bold mb-8">Data Browser</h2>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-bold mb-4">Available Symbols</h3>
+        <table class="min-w-full">
+            <thead>
+                <tr class="border-b">
+                    <th class="text-left py-2">Symbol</th>
+                    <th class="text-left py-2">Exchange</th>
+                    <th class="text-left py-2">Asset Class</th>
+                    <th class="text-left py-2">Last Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for asset in assets %}
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2 font-semibold">{{ asset.symbol }}</td>
+                    <td class="py-2">{{ asset.exchange.code }}</td>
+                    <td class="py-2">{{ asset.asset_class.code }}</td>
+                    <td class="py-2">-</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

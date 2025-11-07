@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-bold mb-8">Backtest Results: {{ strategy_run.strategy.name }}</h2>
+
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h3 class="text-xl font-bold mb-4">Weekly Target Evaluation</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+                <p class="text-sm text-gray-500">Badge</p>
+                <span class="inline-block mt-1 px-4 py-2 text-lg font-bold rounded
+                    {% if evaluation.badge == 'green' %}bg-green-500 text-white
+                    {% elif evaluation.badge == 'amber' %}bg-yellow-500 text-white
+                    {% else %}bg-red-500 text-white{% endif %}">
+                    {{ evaluation.badge|upper }}
+                </span>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Mean Weekly Return</p>
+                <p class="text-2xl font-bold">{{ evaluation.mean_weekly_return|floatformat:2 }}%</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Max Drawdown</p>
+                <p class="text-2xl font-bold text-red-600">{{ evaluation.max_drawdown|floatformat:2 }}%</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Win Rate</p>
+                <p class="text-2xl font-bold">{{ evaluation.win_rate|floatformat:2 }}%</p>
+            </div>
+        </div>
+    </div>
+
+    {% if metrics %}
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h3 class="text-xl font-bold mb-4">Performance Metrics</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+                <p class="text-sm text-gray-500">Total Return</p>
+                <p class="text-xl font-bold">{{ metrics.total_return|floatformat:2 }}%</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Sharpe Ratio</p>
+                <p class="text-xl font-bold">{{ metrics.sharpe_ratio|floatformat:2 }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Total Trades</p>
+                <p class="text-xl font-bold">{{ metrics.total_trades }}</p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Total Commission</p>
+                <p class="text-xl font-bold">₹{{ metrics.total_commission|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-xl font-bold mb-4">Equity Curve</h3>
+        <div id="equity-chart" style="height: 400px;"></div>
+    </div>
+</div>
+
+<script>
+    const equityCurve = {{ equity_curve|safe }};
+    const timestamps = equityCurve.map(d => d.timestamp);
+    const equity = equityCurve.map(d => parseFloat(d.equity));
+
+    const trace = {
+        x: timestamps,
+        y: equity,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Equity',
+        line: {color: '#3B82F6'}
+    };
+
+    const layout = {
+        xaxis: {title: 'Date'},
+        yaxis: {title: 'Equity (₹)'},
+        margin: {t: 20}
+    };
+
+    Plotly.newPlot('equity-chart', [trace], layout);
+</script>
+{% endblock %}
